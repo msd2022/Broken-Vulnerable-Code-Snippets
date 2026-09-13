@@ -10,5 +10,11 @@ hint("will exec the arg specified in the GET parameter \"cmd\"");
 </form>
 
 <?php
-    system($_GET["cmd"]);
+    $cmd = isset($_GET["cmd"]) ? $_GET["cmd"] : "";
+    $allowlist = ["ls", "whoami", "date", "uptime", "pwd"];
+    if (in_array($cmd, $allowlist, true)) {
+        system(escapeshellcmd($cmd));
+    } else {
+        echo htmlspecialchars("Command not allowed. Permitted commands: " . implode(", ", $allowlist));
+    }
  ?>
